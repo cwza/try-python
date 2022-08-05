@@ -47,24 +47,43 @@ def weak_ref():
 
 @mprofile
 def dynamic_class():
-    type1 = type("Geeks", (object, ), {
-        "string_attribute": "Geeks 4 geeks !",
-        "int_attribute": 1706256,
-        "xxx": allocate_bytes(50*1024*1024)
-    })
+    # type1 = type("Geeks", (object, ), {
+    #     "string_attribute": "Geeks 4 geeks !",
+    #     "int_attribute": 1706256,
+    #     "xxx": allocate_bytes(50*1024*1024)
+    # })
+    class Type1:
+        xxx = allocate_bytes(50*1024*1024)
+        pass
 
 @mprofile
 def static_class():
     aa = Foo('name')
     aa.populate()
 
+
+@mprofile
+def dynamic_func():
+    yyy = allocate_bytes(50*1024*1024)
+    def gen_Foo_by_func():
+        xxx = allocate_bytes(50*1024*1024)
+        def foo():
+            pass
+        return foo
+    # class Foo():
+    #     xxx = allocate_bytes(50*1024*1024)
+    print(sys.getrefcount(yyy))
+    print(sys.getrefcount(gen_Foo_by_func))
+    # print(sys.getrefcount(Foo))
+
 @app.route("/")
 def hello():
     gc.disable()
-    weak_ref()
+    # weak_ref()
     # cycle_ref()
     # dynamic_class()
     # static_class()
+    dynamic_func()
     # print(gc.collect())
     return "Hello, World!"
 
